@@ -1,0 +1,32 @@
+#6-73 docker-compose to automate lengthy docker run command using volumes inter alia
+version: '3'
+services:
+  # a service/container called 'web', to serve web pages (by alpine with express & node)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # 'web' as service/container name - build context (. - could be path) pwd with custom Dockerfile name
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/apps
+      # (1) do *not* try to map a folder against /app/node_modules in the container;
+      # (2) map current working directory (outside container):/app folder in container
+  # 6-78 another service/container  'tests' to run tests, re-running when the volume (of course code) is changed
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # 'tests' as service/container name - build context (. - could be path) pwd with custom Dockerfile name
+    #ports:
+    #  - "3000:3000"
+    # no ports needed as no server running inside tests container - solely for filesystem
+    volumes:
+      - /app/node_modules
+      - .:/app
+      # (1) do *not* try to map a folder against /app/node_modules in the container;
+      # (2) map current working directory (outside container):/app folder in container
+    command: ["npm", "run", "test"]
+    # override starting command for this container
