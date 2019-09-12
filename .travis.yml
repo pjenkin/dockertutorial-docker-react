@@ -4,13 +4,13 @@ services:
   - docker
 
 before_install:
-  - docker build -t peternjenkin/DockerTutorial-docker-react -f Dockerfile.dev .
+  - docker build -t peternjenkin/dockertutorial-docker-react -f Dockerfile.dev .
 
 # put on a tag so as to avoid using randomly generated id
 # could tag like -t PJImage &c as this image is used only within Travis
 
 script:
-  - docker run -e CI=true peternjenkin/DockerTutorial-docker-react npm run test
+  - docker run -e CI=true peternjenkin/dockertutorial-docker-react npm run test
 # override start command 7-90 , code amended from video as per 7-89
 # npm run test default behaviour is to run once then present p, t, q &c test suite interface
 # any non-zero status code will indicate a failed build
