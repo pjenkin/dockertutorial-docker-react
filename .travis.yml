@@ -14,3 +14,22 @@ script:
 # override start command 7-90 , code amended from video as per 7-89
 # npm run test default behaviour is to run once then present p, t, q &c test suite interface
 # any non-zero status code will indicate a failed build
+
+# deployment - 7-94 'Travis Config for Deployment'
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-west-1"
+  app: "docker-reactpj1"
+  env: "DockerReactpj1-env"
+  bucket_name: "elasticbeanstalk-eu-west-1-110366069472"
+  bucket_path: "docker-reactpj1"
+  on:
+    branch: master
+  # provider could be eg digitalocean; region is the AWS region used as seen in EBS url
+  # env/environment is sort-of-app-name; S3 bucket_name auto-generated durimg EBS setup (found in Services/S3/elasticbeanstalk-region-guid )
+  # Bucket_path is same as ‘app’ value , i.e. the app name - NB this folder only created on/after first deploy.
+  # only deploy on push to master branch
+  access_key_id:
+    secure: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
